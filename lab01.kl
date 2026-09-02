@@ -521,7 +521,7 @@ let mostFrequentWords k text =
   let ranked =
     sortBy
       (fn a b =>
-        a.count >= b.count)
+        a.count > b.count)
       counts
   in
   take k ranked;
@@ -534,36 +534,36 @@ type BinTree a
 let flatten tree =
   match tree {
     Empty =>
-      ____;
+      [];
     Node value left right =>
       append
-        (flatten ____)
-        (____ :: flatten ____);
+        (flatten left)
+        (value :: flatten right);
   };
 
 # listToBST :: [Int] -> BinTree Int
 let listToBST xs =
   match xs {
     [] =>
-      ____;
+      Empty;
 
     root :: rest =>
       let smaller =
         filter
-          (fn x => x ____ root)
+          (fn x => x <= root)
           rest
       in
       let larger =
         filter
-          (fn x => x ____ root)
+          (fn x => x > root)
           rest
       in
       Node
-        ____
-        (listToBST ____)
-        (listToBST ____);
+        root
+        (listToBST smaller)
+        (listToBST larger);
   };
 
 # notSoQuickSort :: [Int] -> [Int]
 let notSoQuickSort xs =
-  ____ (____ xs);
+  flatten (listToBST xs);
